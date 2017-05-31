@@ -1,0 +1,8 @@
+{
+  "name": "swipe-for-policies",
+  "version": "1.0.0",
+  "description": "A Tinder-style app for the UK General Election 2017",
+  "main": "index.js",
+  "author": "Alex Wilson",
+  "license": "MIT"
+}
