@@ -1,17 +1,28 @@
 document.addEventListener('DOMContentLoaded', function () {
     var stack;
-    var config = {
-      allowedDirections: [gajus.Swing.Card.DIRECTION_LEFT, gajus.Swing.Card.DIRECTION_RIGHT]
-    };
-
     window._sfp = {
         score: {
-            left: 0,
-            right: 0
+            ukip: 0,
+            green: 0
+        },
+        questions: {
+            "trees" : {
+                score: {
+                    ukip: [0, 20],
+                    green: [100, 0]
+                }
+            },
+            "eu" : {
+                score: {
+                    ukip: [100, 0],
+                    green: [0, 60]
+                }
+            }
         }
+
     }
 
-    stack = gajus.Swing.Stack(config);
+    stack = gajus.Swing.Stack();
 
     [].forEach.call(document.querySelectorAll('.stack li.question'), function (targetElement) {
         var card = stack.createCard(targetElement);
@@ -28,12 +39,14 @@ document.addEventListener('DOMContentLoaded', function () {
     stack.on('dragmove', function(e) {
         if (e.throwOutConfidence < 0.3 || !e.target.parentNode) return;
 
-        var score = window._sfp.score;
-        e.throwDirection === -1
-            ? score.left++
-            : score.right++;
+        var question = window._sfp.questions[e.target.id];
+        console.log(e.throwDirection);
+
+        Object.keys(question.score).forEach(function(a) {
+            window._sfp.score[a] += question.score[a][e.throwDirection === -1 ? 0 : 1];
+        });
 
         e.target.parentNode.removeChild(e.target);
-        document.getElementById("answer").innerText = "You voted Left: "+score.left+", Right: "+score.right;
+        document.getElementById("answer").innerText = "You voted Ukip: "+window._sfp.score.ukip+", Greens: "+window._sfp.score.green;
     });
 });
