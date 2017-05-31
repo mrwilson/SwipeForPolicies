@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     stack.on('dragmove', function(e) {
-        if (e.throwOutConfidence < 0.3) return;
+        if (e.throwOutConfidence < 0.3 || !e.target.parentNode) return;
 
         var score = window._sfp.score;
         e.throwDirection === -1
